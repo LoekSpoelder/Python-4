@@ -1,2 +1,2 @@
 inp = input("tiep iets: ")
-print(inp)
+print(inp ", wow!")
