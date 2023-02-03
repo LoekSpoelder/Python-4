@@ -1,6 +1,1 @@
-naam = input("Hoe heet je? ")
-print("-"*27)
-print(naam + ", wat leuk!")
-print(f"{naam:^27}")
-print(f"je naam is: {naam:>15}")
-print("-"*27)
+

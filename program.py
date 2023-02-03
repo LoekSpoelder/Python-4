@@ -1,13 +1,14 @@
-kies_lijst(lijst_naam)
+def kies_lijst(lijst_naam):
+    print("temp")
 
-leeg_scherm()
+def leeg_scherm():
     Maakt het terminalscherm leeg
 
     Gebruikt: -
     Parameters: -
     Returnwaarde: -
 
-lees_woordenlijst(bestandsnaam)
+def lees_woordenlijst(bestandsnaam):
     Leest de woordparen in uit het bestand genaamd 'bestandsnaam'.
 
     Gebruikt: SCHEIDER
@@ -41,26 +42,26 @@ def main():
     Parameters: Geen
     Returnwaarde: Geen
 
-nieuwe_lijst_naam()
+def nieuwe_lijst_naam():
     Gebruikt: -
     Parameters: -
     Returnwaarde: de lijst_naam van de nieuw gekozen lijst
 
-overhoren(woordenlijst)
+def overhoren(woordenlijst):
     Blijf woorden overhoren totdat de gebruiker aangeeft te willen stoppen.
 
     Gebruikt: STOPPEN
     Parameters: de woordenlijst die overhoord moet worden
     Returnwaarde: -
 
-print_afscheid()
+def print_afscheid():
     Print een afscheidboodschap nadat het programma is afgesloten
 
     Gebruikt: SCHERMHOOGTE, SCHERMBREEDTE
     Parameters: -
     Returnwaarde: -
 
-print_footer()
+def print_footer():
     Print het volgende over de hele breedte van het scherm:
     |             |
     ===============
@@ -70,7 +71,7 @@ print_footer()
     Parameters: -
     Returnwaarde: -
 
-print_header()
+def print_header():
     Print het volgende over de hele breedte van het scherm:
     ===============
     |             |
@@ -80,14 +81,14 @@ print_header()
     Parameters: -
     Returnwaarde: -
 
-print_menu(lijst_naam)
+def print_menu(lijst_naam):
     Print het (keuze)menu inclusief de geselecteerde lijst
 
     Gebruikt: SCHERMHOOGTE, SCHERMBREEDTE
     Parameters: De naam van de geselecteerde woordenlijst
     Returnwaarde: -
 
-print_regel(inhoud='')
+def print_regel(inhoud=''):
     print_regel() print de inhoud links uitgelijnd uit.
     Voor de inhoud wordt '| ' gezet en rechts uitgelijnd ' |'.
     Bijvoorbeeld:
@@ -100,7 +101,7 @@ print_regel(inhoud='')
     Parameters: de string die geprint moet worden in de regel
     Returnwaarde: -
 
-schrijf_woordenlijst(bestandsnaam, woordenlijst)
+def schrijf_woordenlijst(bestandsnaam, woordenlijst):
     Schrijft de woordparen weg naar het bestand genaamd 'bestandsnaam'.
     De oude inhoud van het bestand wordt overschreven!
 
@@ -108,7 +109,7 @@ schrijf_woordenlijst(bestandsnaam, woordenlijst)
     Parameter: naam van het bestand waar de woordenlijst in geschreven wordt, woordenlijst die weggeschreven wordt
     Returnwaarde: -
 
-verwijder_woord(woord, woordenlijst)
+def verwijder_woord(woord, woordenlijst):
     Vraagt of gebruiker zeker weet of er verwijderd moet worden.
     Verwijdert het woord en de vertaling uit de lijst als dit zo is.
 
@@ -116,7 +117,7 @@ verwijder_woord(woord, woordenlijst)
     Parameters: het woord dat verwijderd moet worden, de woordenlijst waaruit verwijderd moet worden
     Returnwaarde: -
 
-voeg_woorden_toe(woordenlijst, lijst_naam)
+def voeg_woorden_toe(woordenlijst, lijst_naam):
     Vraag de gebruiker steeds om woordenparen en voeg ze toe aan de lijst.
     Stop als de gebruiker aangeeft te willen stoppen.
 
@@ -124,7 +125,7 @@ voeg_woorden_toe(woordenlijst, lijst_naam)
     Parameters: de woordenlijst waarin toegevoegd moet worden, de lijst_naam van deze woordenlijst
     Returnwaarde: -
 
-DATA
+#DATA
     DELETE = 'd'
     EXTENSIE = '.wrd'
     KIES_LIJST = 'k'
