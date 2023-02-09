@@ -1,1 +1,4 @@
 laptop1=laptop2
+boek1=boek2
+plant1=plant2
+tafel1=tafel2
