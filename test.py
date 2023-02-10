@@ -2,13 +2,30 @@
 #  bestandsdata = f.read().split("\n")
 #for item in bestandsdata:
 #  woord1, woord2 = item.split("=")
-#print(woord1)
-#print(woord2)
+#  woordenlijst[woord1] = woord2
 
-#import time
 #f = open('stowage.txt')
 #for line in f:
 #  woord1, woord2 = line.strip('\n').split('=')
-#  print(woord1 + " en " + woord2)
-#  time.sleep(0.5)
+#  woordenlijst[woord1] = woord2
 #f.close('stowage.txt')
+
+#def lees_woordenlijst(bestandsnaam):
+#  SCHEIDER = '='
+#  woordenlijst = {}
+#  with open(bestandsnaam) as f:
+#    bestandsdata = f.read().split("\n")
+#  for item in bestandsdata:
+#    woord1, woord2 = item.split(SCHEIDER)
+#    woordenlijst[woord1] = woord2
+#  return woordenlijst
+#def main():
+#  lijst = lees_woordenlijst("stowage.txt")
+#  print(lijst)
+#main()
+
+def schrijf_woordenlijst(bestandsnaam, woordenlijst):
+  SCHEIDER = '='
+
+woordenlijst = { "koe": "cow", "schaap": "sheep", "varken": "pig" }
+schrijf_woordenlijst("stowage.txt", woordenlijst)
