@@ -1,19 +1,29 @@
+DELETE = 'd'
+EXTENSIE = '.wrd'
+KIES_LIJST = 'k'
+MAX_WOORDLENGTE = 20
+NIEUWE_LIJST = 'n'
+OPSLAAN = 'w'
+OVERHOREN = 'o'
+SCHEIDER = '='
+SCHERMBREEDTE = 80
+SCHERMHOOGTE = 40
+STANDAARD_LIJST = 'EN-NED'
+STOPPEN = 'q'
+TOEVOEGEN = 't'
+
 def kies_lijst(lijst_naam):
-    print("temp")
+    #?
 
 def leeg_scherm():
-    Maakt het terminalscherm leeg
-
-    Gebruikt: -
-    Parameters: -
-    Returnwaarde: -
+    #Maakt het terminalscherm leeg
 
 def lees_woordenlijst(bestandsnaam):
-    Leest de woordparen in uit het bestand genaamd 'bestandsnaam'.
-
-    Gebruikt: SCHEIDER
-    Parameter: naam van het bestand waar de woordenlijst in staat
-    Returnwaarde: een dictionary met woordparen
+    f = open('stowage.txt')
+    for line in f:
+        woord1, woord2 = line.strip('\n').split('=')
+        woordenlijst[woord1] = woord2
+    f.close('stowage.txt')
 
 def main():
     print("-"*50)
@@ -102,12 +112,12 @@ def print_regel(inhoud=''):
     Returnwaarde: -
 
 def schrijf_woordenlijst(bestandsnaam, woordenlijst):
-    Schrijft de woordparen weg naar het bestand genaamd 'bestandsnaam'.
-    De oude inhoud van het bestand wordt overschreven!
-
-    Gebruikt: SCHEIDER
-    Parameter: naam van het bestand waar de woordenlijst in geschreven wordt, woordenlijst die weggeschreven wordt
-    Returnwaarde: -
+    f = open("stowage.txt", 'w')
+    for key, value in woordenlijst.items():
+        f.write(f"{key}{SCHEIDER}{value}\n")
+    f.close()
+    woordenlijst = { "koe": "cow", "schaap": "sheep", "varken": "pig" }
+    schrijf_woordenlijst("stowage.txt", woordenlijst)
 
 def verwijder_woord(woord, woordenlijst):
     Vraagt of gebruiker zeker weet of er verwijderd moet worden.
@@ -124,18 +134,3 @@ def voeg_woorden_toe(woordenlijst, lijst_naam):
     Gebruikt: SCHEIDER, STOPPEN
     Parameters: de woordenlijst waarin toegevoegd moet worden, de lijst_naam van deze woordenlijst
     Returnwaarde: -
-
-#DATA
-    DELETE = 'd'
-    EXTENSIE = '.wrd'
-    KIES_LIJST = 'k'
-    MAX_WOORDLENGTE = 20
-    NIEUWE_LIJST = 'n'
-    OPSLAAN = 'w'
-    OVERHOREN = 'o'
-    SCHEIDER = '='
-    SCHERMBREEDTE = 80
-    SCHERMHOOGTE = 40
-    STANDAARD_LIJST = 'EN-NED'
-    STOPPEN = 'q'
-    TOEVOEGEN = 't'

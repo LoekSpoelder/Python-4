@@ -26,6 +26,9 @@
 
 def schrijf_woordenlijst(bestandsnaam, woordenlijst):
   SCHEIDER = '='
-
+  f = open("stowage.txt", 'w')
+  for key, value in woordenlijst.items():
+    f.write(f"{key}{SCHEIDER}{value}\n")
+  f.close()
 woordenlijst = { "koe": "cow", "schaap": "sheep", "varken": "pig" }
 schrijf_woordenlijst("stowage.txt", woordenlijst)
