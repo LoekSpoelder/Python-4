@@ -1,5 +1,5 @@
 DELETE = 'd'
-EXTENSIE = '.wrd'
+EXTENSIE = '.txt'
 KIES_LIJST = 'k'
 MAX_WOORDLENGTE = 20
 NIEUWE_LIJST = 'n'
@@ -21,37 +21,26 @@ def leeg_scherm():
     print("")
 
 def lees_woordenlijst(bestandsnaam):
-    f = open('stowage.txt')
+    f = open(bestandsnaam)
     for line in f:
-        woord1, woord2 = line.strip('\n').split('=')
+        woord1, woord2 = line.strip('\n').split(SCHEIDER)
         woordenlijst[woord1] = woord2
-    f.close('stowage.txt')
+    f.close()
+    return woordenlijst
 
 def main():
-    print("-"*50)
-    print(f"|{'Menu':^48}|")
-    print("|" + " "*48 + "|")
-    print(f"| {'1. nieuwe woordenlijst maken':<46} |")
-    print(f"| {'2. veranderen van woordenlijst':<46} |")
-    print(f"| {'3. woorden toevoegen aan een woordenlijst':<46} |")
-    print(f"| {'4. woordenlijsten overhoren':<46} |")
-    print(f"| {'5. stoppen met het programma':<46} |")
-    print("-"*50)
     choice = input("Uw keuze: ")
-    if choice == "1":
-        TOEVOEGEN()
-    elif choice == "2":
-        #?
+    if choice == EXTENSIE:
         print("")
-    elif choice == "3":
-        #?
-        print("")
-    elif choice == "4":
-        OVERHOREN()
-    elif choice == "5":
+    elif choice == KIES_LIJST:
+        KIES_LIJST
+    elif choice == TOEVOEGEN:
+        TOEVOEGEN
+    elif choice == OVERHOREN:
+        overhoren()
+    elif choice == STOPPEN:
         exit
     else:
-        #?
         print("")
 
     #Gebruikt: STANDAARD_LIJST, KIES_LIJST, OVERHOREN, TOEVOEGEN, EXTENSIE, STOPPEN
@@ -87,11 +76,20 @@ def print_footer():
     print("-"*SCHERMBREEDTE)
 
 def print_menu(lijst_naam):
+    print("-"*SCHERMBREEDTE)
+    print(f"|{'Menu':^{SCHERMBREEDTE-2}}|")
+    print(f"|{lijst_naam:^{SCHERMBREEDTE-2}}|")
+    print("|" + " "*(SCHERMBREEDTE-2) + "|")
+    print(f"| {'1. nieuwe woordenlijst maken':<{SCHERMBREEDTE-4}} |")
+    print(f"| {'2. veranderen van woordenlijst':<{SCHERMBREEDTE-4}} |")
+    print(f"| {'3. woorden toevoegen aan een woordenlijst':<{SCHERMBREEDTE-4}} |")
+    print(f"| {'4. woordenlijsten overhoren':<{SCHERMBREEDTE-4}} |")
+    print(f"| {'5. stoppen met het programma':<{SCHERMBREEDTE-4}} |")
+    print("-"*SCHERMBREEDTE)
     #Print het (keuze)menu inclusief de geselecteerde lijst
     #Gebruikt: SCHERMHOOGTE, SCHERMBREEDTE
     #Parameters: De naam van de geselecteerde woordenlijst
     #Returnwaarde: -
-    print("")
 
 def print_regel(inhoud=''):
     #print_regel() print de inhoud links uitgelijnd uit.

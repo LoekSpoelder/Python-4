@@ -13,11 +13,11 @@
 def lees_woordenlijst(bestandsnaam):
   SCHEIDER = '='
   woordenlijst = {}
-  with open(bestandsnaam) as f:
-    bestandsdata = f.read().split("\n")
-  for item in bestandsdata:
-    woord1, woord2 = item.split(SCHEIDER)
+  f = open(bestandsnaam)
+  for line in f:
+    woord1, woord2 = line.strip('\n').split('=')
     woordenlijst[woord1] = woord2
+  f.close()
   return woordenlijst
 
 def main():
