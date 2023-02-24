@@ -1,3 +1,4 @@
+import os, time
 DELETE = 'd'
 EXTENSIE = '.txt'
 KIES_LIJST = 'k'
@@ -9,16 +10,16 @@ SCHEIDER = '='
 SCHERMBREEDTE = 50
 SCHERMHOOGTE = 40
 STANDAARD_LIJST = 'EN-NED'
-STOPPEN = 'q'
+STOPPEN = 's'
 TOEVOEGEN = 't'
+woordenlijst = {}
 
 def kies_lijst(lijst_naam):
     #?
     print("")
 
 def leeg_scherm():
-    #Maakt het terminalscherm leeg
-    print("")
+    os.system('cls')
 
 def lees_woordenlijst(bestandsnaam):
     f = open(bestandsnaam)
@@ -29,16 +30,17 @@ def lees_woordenlijst(bestandsnaam):
     return woordenlijst
 
 def main():
-    choice = input("Uw keuze: ")
-    if choice == EXTENSIE:
+    print_menu(STANDAARD_LIJST)
+    keuze = input("Uw keuze: ")
+    if keuze == NIEUWE_LIJST:
         print("")
-    elif choice == KIES_LIJST:
+    elif keuze == KIES_LIJST:
         KIES_LIJST
-    elif choice == TOEVOEGEN:
+    elif keuze == TOEVOEGEN:
         TOEVOEGEN
-    elif choice == OVERHOREN:
-        overhoren()
-    elif choice == STOPPEN:
+    elif keuze == OVERHOREN:
+        overhoren(lees_woordenlijst("stowage.txt"))
+    elif keuze == STOPPEN:
         exit
     else:
         print("")
@@ -54,18 +56,30 @@ def nieuwe_lijst_naam():
     print("")
 
 def overhoren(woordenlijst):
+    for key, value in woordenlijst.items():
+        print('Wat is de vertaling van "' + value + '".')
+        answer = input()
+        if answer == key:
+            print("Juist, " + value + " betekent " + key + ".")
+            print("-"*SCHERMBREEDTE)
+        elif answer == STOPPEN:
+            leeg_scherm()
+            main()
+            break
+        else:
+            print("Onjuist, " + value + " betekent " + key + ".")
+            print("-"*SCHERMBREEDTE)
     #Blijf woorden overhoren totdat de gebruiker aangeeft te willen stoppen.
     #Gebruikt: STOPPEN
     #Parameters: de woordenlijst die overhoord moet worden
     #Returnwaarde: -
-    print("")
 
 def print_afscheid():
     #Print een afscheidboodschap nadat het programma is afgesloten
     #Gebruikt: SCHERMHOOGTE, SCHERMBREEDTE
-    #Parameters: -
-    #Returnwaarde: -
-    print("")
+    print("-"*SCHERMBREEDTE)
+    print(f"|{'Doei!':^{SCHERMBREEDTE-2}}|")
+    print("-"*SCHERMBREEDTE)
 
 def print_header():
     print("-"*SCHERMBREEDTE)
@@ -127,3 +141,5 @@ def voeg_woorden_toe(woordenlijst, lijst_naam):
     #Parameters: de woordenlijst waarin toegevoegd moet worden, de lijst_naam van deze woordenlijst
     #Returnwaarde: -
     print("")
+
+main()
