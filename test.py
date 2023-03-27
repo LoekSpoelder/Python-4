@@ -10,27 +10,25 @@
 #  woordenlijst[woord1] = woord2
 #f.close('stowage.txt')
 
-def lees_woordenlijst(bestandsnaam):
-  SCHEIDER = '='
-  woordenlijst = {}
-  f = open(bestandsnaam)
-  for line in f:
-    woord1, woord2 = line.strip('\n').split('=')
-    woordenlijst[woord1] = woord2
-  f.close()
-  return woordenlijst
-
-def main():
-  lijst = lees_woordenlijst("stowage.txt")
-  print(lijst)
-
-main()
-
-#def schrijf_woordenlijst(bestandsnaam, woordenlijst):
+#def lees_woordenlijst(bestandsnaam):
 #  SCHEIDER = '='
-#  f = open("stowage.txt", 'w')
-#  for key, value in woordenlijst.items():
-#    f.write(f"{key}{SCHEIDER}{value}\n")
+#  woordenlijst = {}
+#  f = open(bestandsnaam)
+#  for line in f:
+#    woord1, woord2 = line.strip('\n').split('=')
+#    woordenlijst[woord1] = woord2
 #  f.close()
-#woordenlijst = { "koe": "cow", "schaap": "sheep", "varken": "pig" }
-#schrijf_woordenlijst("stowage.txt", woordenlijst)
+#  return woordenlijst
+#def main():
+#  lijst = lees_woordenlijst("stowage.txt")
+#  print(lijst)
+#main()
+
+def schrijf_woordenlijst(bestandsnaam, woordenlijst):
+  SCHEIDER = '='
+  f = open("stowage.txt", 'w')
+  for key, value in woordenlijst.items():
+    f.write(f"{key}{SCHEIDER}{value}\n")
+  f.close()
+woordenlijst = { "koe": "cow", "schaap": "sheep", "varken": "pig" }
+schrijf_woordenlijst("stowage.txt", woordenlijst)

@@ -1,17 +1,16 @@
 import os, time
 DELETE = 'd'
 EXTENSIE = '.txt'
-KIES_LIJST = 'k'
+KIES_LIJST = '2'
 MAX_WOORDLENGTE = 20
-NIEUWE_LIJST = 'n'
+NIEUWE_LIJST = '1'
 OPSLAAN = 'w'
-OVERHOREN = 'o'
+OVERHOREN = '4'
 SCHEIDER = '='
 SCHERMBREEDTE = 50
-SCHERMHOOGTE = 40
-STANDAARD_LIJST = 'EN-NED'
-STOPPEN = 's'
-TOEVOEGEN = 't'
+STANDAARD_LIJST = 'stowage.txt'
+STOPPEN = '5'
+TOEVOEGEN = '3'
 woordenlijst = {}
 
 def kies_lijst(lijst_naam):
@@ -30,7 +29,7 @@ def lees_woordenlijst(bestandsnaam):
     return woordenlijst
 
 def main():
-    print_menu(STANDAARD_LIJST)
+    print_menu(STANDAARD_LIJST.strip(EXTENSIE))
     keuze = input("Uw keuze: ")
     if keuze == NIEUWE_LIJST:
         print("")
@@ -39,12 +38,16 @@ def main():
     elif keuze == TOEVOEGEN:
         TOEVOEGEN
     elif keuze == OVERHOREN:
-        overhoren(lees_woordenlijst("stowage.txt"))
+        overhoren(lees_woordenlijst(STANDAARD_LIJST))
     elif keuze == STOPPEN:
+        leeg_scherm()
+        print_afscheid()
         exit
     else:
-        print("")
-
+        print("Vul " + NIEUWE_LIJST + ", " + KIES_LIJST + ", " + TOEVOEGEN + ", " + OVERHOREN + " of " + STOPPEN + " in.")
+        time.sleep(2)
+        leeg_scherm()
+        main()
     #Gebruikt: STANDAARD_LIJST, KIES_LIJST, OVERHOREN, TOEVOEGEN, EXTENSIE, STOPPEN
     #Parameters: Geen
     #Returnwaarde: Geen
@@ -75,8 +78,6 @@ def overhoren(woordenlijst):
     #Returnwaarde: -
 
 def print_afscheid():
-    #Print een afscheidboodschap nadat het programma is afgesloten
-    #Gebruikt: SCHERMHOOGTE, SCHERMBREEDTE
     print("-"*SCHERMBREEDTE)
     print(f"|{'Doei!':^{SCHERMBREEDTE-2}}|")
     print("-"*SCHERMBREEDTE)
@@ -90,41 +91,29 @@ def print_footer():
     print("-"*SCHERMBREEDTE)
 
 def print_menu(lijst_naam):
-    print("-"*SCHERMBREEDTE)
+    print_header()
     print(f"|{'Menu':^{SCHERMBREEDTE-2}}|")
     print(f"|{lijst_naam:^{SCHERMBREEDTE-2}}|")
     print("|" + " "*(SCHERMBREEDTE-2) + "|")
-    print(f"| {'1. nieuwe woordenlijst maken':<{SCHERMBREEDTE-4}} |")
-    print(f"| {'2. veranderen van woordenlijst':<{SCHERMBREEDTE-4}} |")
-    print(f"| {'3. woorden toevoegen aan een woordenlijst':<{SCHERMBREEDTE-4}} |")
-    print(f"| {'4. woordenlijsten overhoren':<{SCHERMBREEDTE-4}} |")
-    print(f"| {'5. stoppen met het programma':<{SCHERMBREEDTE-4}} |")
-    print("-"*SCHERMBREEDTE)
+    print(f"| {NIEUWE_LIJST + '. nieuwe woordenlijst maken':<{SCHERMBREEDTE-4}} |")
+    print(f"| {KIES_LIJST + '. veranderen van woordenlijst':<{SCHERMBREEDTE-4}} |")
+    print(f"| {TOEVOEGEN + '. woorden toevoegen aan een woordenlijst':<{SCHERMBREEDTE-4}} |")
+    print(f"| {OVERHOREN + '. woordenlijsten overhoren':<{SCHERMBREEDTE-4}} |")
+    print(f"| {STOPPEN + '. stoppen met het programma':<{SCHERMBREEDTE-4}} |")
+    print_footer()
     #Print het (keuze)menu inclusief de geselecteerde lijst
     #Gebruikt: SCHERMHOOGTE, SCHERMBREEDTE
     #Parameters: De naam van de geselecteerde woordenlijst
     #Returnwaarde: -
 
 def print_regel(inhoud=''):
-    #print_regel() print de inhoud links uitgelijnd uit.
-    #Voor de inhoud wordt '| ' gezet en rechts uitgelijnd ' |'.
-    #Bijvoorbeeld:
-    #SCHERMBREEDTE = 30
-    #inhoud = "Mooi zeg"
-    #Uitvoer:
-    #| Mooi zeg                   |
-    #Gebruikt: SCHERMBREEDTE
-    #Parameters: de string die geprint moet worden in de regel
-    #Returnwaarde: -
-    print("")
+    print(f"| {inhoud:<{SCHERMBREEDTE-4}} |")
 
 def schrijf_woordenlijst(bestandsnaam, woordenlijst):
-    f = open("stowage.txt", 'w')
+    f = open(STANDAARD_LIJST, 'w')
     for key, value in woordenlijst.items():
         f.write(f"{key}{SCHEIDER}{value}\n")
     f.close()
-    woordenlijst = { "koe": "cow", "schaap": "sheep", "varken": "pig" }
-    schrijf_woordenlijst("stowage.txt", woordenlijst)
 
 def verwijder_woord(woord, woordenlijst):
     #Vraagt of gebruiker zeker weet of er verwijderd moet worden.
@@ -135,6 +124,8 @@ def verwijder_woord(woord, woordenlijst):
     print("")
 
 def voeg_woorden_toe(woordenlijst, lijst_naam):
+    woordenlijst = { "koe": "cow", "schaap": "sheep", "varken": "pig" }
+    schrijf_woordenlijst("stowage.txt", woordenlijst)
     #Vraag de gebruiker steeds om woordenparen en voeg ze toe aan de lijst.
     #Stop als de gebruiker aangeeft te willen stoppen.
     #Gebruikt: SCHEIDER, STOPPEN
