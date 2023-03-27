@@ -1,3 +1,4 @@
 koe=cow
 schaap=sheep
 varken=pig
+raam=window

@@ -36,7 +36,7 @@ def main():
     elif keuze == KIES_LIJST:
         KIES_LIJST
     elif keuze == TOEVOEGEN:
-        TOEVOEGEN
+        voeg_woorden_toe(woordenlijst, STANDAARD_LIJST)
     elif keuze == OVERHOREN:
         overhoren(lees_woordenlijst(STANDAARD_LIJST))
     elif keuze == STOPPEN:
@@ -110,7 +110,7 @@ def print_regel(inhoud=''):
     print(f"| {inhoud:<{SCHERMBREEDTE-4}} |")
 
 def schrijf_woordenlijst(bestandsnaam, woordenlijst):
-    f = open(STANDAARD_LIJST, 'w')
+    f = open(bestandsnaam, 'w')
     for key, value in woordenlijst.items():
         f.write(f"{key}{SCHEIDER}{value}\n")
     f.close()
@@ -123,14 +123,22 @@ def verwijder_woord(woord, woordenlijst):
     #Returnwaarde: -
     print("")
 
-def voeg_woorden_toe(woordenlijst, lijst_naam):
-    woordenlijst = { "koe": "cow", "schaap": "sheep", "varken": "pig" }
-    schrijf_woordenlijst("stowage.txt", woordenlijst)
+def voeg_woorden_toe(woordenlijst, STANDAARD_LIJST):
+    lees_woordenlijst(STANDAARD_LIJST)
+    while True:
+        woord1 = input("1. Wat is het Nederlandse woord? ")
+        woord2 = input("2. Wat is het Engelse woord? ")
+        if woord1 == STOPPEN or woord2 == STOPPEN:
+            break
+        else:
+            print("-"*SCHERMBREEDTE)
+            woordenlijst[woord1] = woord2
+    schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)
+    main()
     #Vraag de gebruiker steeds om woordenparen en voeg ze toe aan de lijst.
     #Stop als de gebruiker aangeeft te willen stoppen.
     #Gebruikt: SCHEIDER, STOPPEN
     #Parameters: de woordenlijst waarin toegevoegd moet worden, de lijst_naam van deze woordenlijst
     #Returnwaarde: -
-    print("")
 
 main()
