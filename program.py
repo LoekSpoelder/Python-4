@@ -1,21 +1,42 @@
 import os, time
 DELETE = 'd'
 EXTENSIE = '.txt'
-KIES_LIJST = '2'
+KIES_LIJST = 'k'
 MAX_WOORDLENGTE = 20
-NIEUWE_LIJST = '1'
+NIEUWE_LIJST = 'n'
 OPSLAAN = 'w'
-OVERHOREN = '4'
+OVERHOREN = 'o'
 SCHEIDER = '='
 SCHERMBREEDTE = 50
 STANDAARD_LIJST = 'stowage.txt'
-STOPPEN = '5'
-TOEVOEGEN = '3'
+STOPPEN = 's'
+TOEVOEGEN = 't'
 woordenboek = {}
 
-def kies_lijst(lijst_naam):
-    #?
-    print("")
+def kies_lijst():
+    leeg_scherm()
+    stowage = os.listdir()
+    stowage.remove(".git")
+    stowage.remove("program.py")
+    print_header()
+    print_header_regel("De Huidige lijst is: " + nieuwe_lijst_naam())
+    print_regel()
+    print_regel("Woordenlijsten in map:")
+    for thingy in range(len(stowage)):
+        print_regel(stowage[thingy])
+    print_regel()
+    print_regel("Voer hieronder de gekozen lijstnaam in.")
+    print_regel("Voer '" + STOPPEN + "' in om te stoppen.")
+    print_footer()
+    antwoord = input("Woordenlijst: ")
+    if antwoord in stowage:
+        STANDAARD_LIJST = antwoord #defunct
+        main()
+    elif antwoord == STOPPEN:
+        main()
+    else:
+        print("Dat is niet een woordenlijst.")
+        kies_lijst()
 
 def leeg_scherm():
     os.system('cls')
@@ -30,12 +51,12 @@ def lees_woordenlijst(bestandsnaam):
 
 def main():
     leeg_scherm()
-    print_menu(STANDAARD_LIJST.strip(EXTENSIE))
+    print_menu(nieuwe_lijst_naam())
     keuze = input("Uw keuze: ")
     if keuze == NIEUWE_LIJST:
         print("")
     elif keuze == KIES_LIJST:
-        KIES_LIJST
+        kies_lijst()
     elif keuze == TOEVOEGEN:
         voeg_woorden_toe(woordenboek, STANDAARD_LIJST)
     elif keuze == OVERHOREN:
@@ -54,10 +75,7 @@ def main():
     #Returnwaarde: Geen
 
 def nieuwe_lijst_naam():
-    #Gebruikt: -
-    #Parameters: -
-    #Returnwaarde: de lijst_naam van de nieuw gekozen lijst
-    print("")
+    return STANDAARD_LIJST.strip(EXTENSIE)
 
 def overhoren(woordenlijst):
     while True:
@@ -109,6 +127,9 @@ def print_menu(lijst_naam):
 
 def print_regel(inhoud=''):
     print(f"| {inhoud:<{SCHERMBREEDTE-4}} |")
+
+def print_header_regel(inhoud=''):
+    print(f"| {inhoud:^{SCHERMBREEDTE-4}} |")
 
 def schrijf_woordenlijst(bestandsnaam, woordenlijst):
     f = open(bestandsnaam, 'w')
