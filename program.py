@@ -31,9 +31,8 @@ def kies_lijst():
     antwoord = input("Woordenlijst: ")
     if antwoord in stowage:
         STANDAARD_LIJST = antwoord #defunct
-        main()
     elif antwoord == STOPPEN:
-        main()
+        pass
     else:
         print("Dat is niet een woordenlijst.")
         kies_lijst()
@@ -50,26 +49,26 @@ def lees_woordenlijst(bestandsnaam):
     return woordenboek
 
 def main():
-    leeg_scherm()
-    print_menu(nieuwe_lijst_naam())
-    keuze = input("Uw keuze: ")
-    if keuze == NIEUWE_LIJST:
-        print("")
-    elif keuze == KIES_LIJST:
-        kies_lijst()
-    elif keuze == TOEVOEGEN:
-        voeg_woorden_toe(woordenboek, STANDAARD_LIJST)
-    elif keuze == OVERHOREN:
-        overhoren(lees_woordenlijst(STANDAARD_LIJST))
-    elif keuze == STOPPEN:
+    while True:
         leeg_scherm()
-        print_afscheid()
-        exit
-    else:
-        print("Vul " + NIEUWE_LIJST + ", " + KIES_LIJST + ", " + TOEVOEGEN + ", " + OVERHOREN + " of " + STOPPEN + " in.")
-        time.sleep(2)
-        leeg_scherm()
-        main()
+        print_menu(nieuwe_lijst_naam())
+        keuze = input("Uw keuze: ")
+        if keuze == NIEUWE_LIJST:
+            print("")
+        elif keuze == KIES_LIJST:
+            kies_lijst()
+        elif keuze == TOEVOEGEN:
+            voeg_woorden_toe(woordenboek, STANDAARD_LIJST)
+        elif keuze == OVERHOREN:
+            overhoren(lees_woordenlijst(STANDAARD_LIJST))
+        elif keuze == STOPPEN:
+            leeg_scherm()
+            print_afscheid()
+            break
+        else:
+            print("Vul " + NIEUWE_LIJST + ", " + KIES_LIJST + ", " + TOEVOEGEN + ", " + OVERHOREN + " of " + STOPPEN + " in.")
+            time.sleep(2)
+            leeg_scherm()
     #Gebruikt: STANDAARD_LIJST, KIES_LIJST, OVERHOREN, TOEVOEGEN, EXTENSIE, STOPPEN
     #Parameters: Geen
     #Returnwaarde: Geen
@@ -78,7 +77,8 @@ def nieuwe_lijst_naam():
     return STANDAARD_LIJST.strip(EXTENSIE)
 
 def overhoren(woordenlijst):
-    while True:
+    dingle = True
+    while dingle == True:
         for key, value in woordenlijst.items():
             print('Wat is de vertaling van "' + value + '".')
             answer = input()
@@ -86,7 +86,7 @@ def overhoren(woordenlijst):
                 print("Juist, " + value + " betekent " + key + ".")
                 print("-"*SCHERMBREEDTE)
             elif answer == STOPPEN:
-                main()
+                dingle = False
                 break
             else:
                 print("Onjuist, " + value + " betekent " + key + ".")
@@ -142,9 +142,8 @@ def verwijder_woord(woord, woordenlijst):
     if answer == "ja":
         del woordenlijst[woord]
         schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)
-        main()
     elif answer == "nee":
-        main()
+        pass
     else:
         print("Vul ja of nee in.")
         verwijder_woord("raam", lees_woordenlijst(STANDAARD_LIJST))
@@ -166,7 +165,6 @@ def voeg_woorden_toe(woordenlijst, STANDAARD_LIJST):
         print("-"*SCHERMBREEDTE)
         woordenlijst[woord1] = woord2
     schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)
-    main()
     #Vraag de gebruiker steeds om woordenparen en voeg ze toe aan de lijst.
     #Stop als de gebruiker aangeeft te willen stoppen.
     #Gebruikt: SCHEIDER, STOPPEN
