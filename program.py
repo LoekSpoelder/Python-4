@@ -14,6 +14,7 @@ TOEVOEGEN = 't'
 woordenboek = {}
 
 def kies_lijst():
+    global STANDAARD_LIJST
     leeg_scherm()
     stowage = os.listdir()
     stowage.remove(".git")
@@ -35,6 +36,7 @@ def kies_lijst():
         pass
     else:
         print("Dat is niet een woordenlijst.")
+        time.sleep(2)
         kies_lijst()
 
 def leeg_scherm():
@@ -68,7 +70,6 @@ def main():
         else:
             print("Vul " + NIEUWE_LIJST + ", " + KIES_LIJST + ", " + TOEVOEGEN + ", " + OVERHOREN + " of " + STOPPEN + " in.")
             time.sleep(2)
-            leeg_scherm()
     #Gebruikt: STANDAARD_LIJST, KIES_LIJST, OVERHOREN, TOEVOEGEN, EXTENSIE, STOPPEN
     #Parameters: Geen
     #Returnwaarde: Geen
@@ -80,17 +81,32 @@ def overhoren(woordenlijst):
     dingle = True
     while dingle == True:
         for key, value in woordenlijst.items():
-            print('Wat is de vertaling van "' + value + '".')
+            leeg_scherm()
+            print_header()
+            print_header_regel('Wat is de vertaling van "' + value + '".')
+            print_footer()
             answer = input()
             if answer == key:
-                print("Juist, " + value + " betekent " + key + ".")
-                print("-"*SCHERMBREEDTE)
+                leeg_scherm()
+                print_header()
+                print_header_regel("Juist, " + value + " betekent " + key + ".")
+                print_regel()
+                print_regel("Vul Enter in om verder te gaan")
+                print_regel("Vul " + STOPPEN + " in om te stoppen en " + DELETE + " in om het woord te verwijderen.")
+                print_footer()
+                time.sleep(2)
             elif answer == STOPPEN:
                 dingle = False
                 break
             else:
-                print("Onjuist, " + value + " betekent " + key + ".")
-                print("-"*SCHERMBREEDTE)
+                leeg_scherm()
+                print_header()
+                print_header_regel("Onjuist, " + value + " betekent " + key + ".")
+                print_regel()
+                print_regel("Vul Enter in om verder te gaan")
+                print_regel("Vul " + STOPPEN + " in om te stoppen en " + DELETE + " in om het woord te verwijderen.")
+                print_footer()
+                answertwo = input()
     #Blijf woorden overhoren totdat de gebruiker aangeeft te willen stoppen.
     #Gebruikt: STOPPEN
     #Parameters: de woordenlijst die overhoord moet worden
