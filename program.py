@@ -8,7 +8,7 @@ OPSLAAN = 'w'
 OVERHOREN = 'o'
 SCHEIDER = '='
 SCHERMBREEDTE = 50
-STANDAARD_LIJST = 'stowage.txt'
+STANDAARD_LIJST = 'NL-ENG.txt'
 STOPPEN = 's'
 TOEVOEGEN = 't'
 woordenboek = {}
