@@ -31,7 +31,7 @@ def kies_lijst():
     print_footer()
     antwoord = input("Woordenlijst: ")
     if antwoord in stowage:
-        STANDAARD_LIJST = antwoord #defunct
+        STANDAARD_LIJST = antwoord
     elif antwoord == STOPPEN:
         pass
     else:
@@ -77,6 +77,29 @@ def main():
 def nieuwe_lijst_naam():
     return STANDAARD_LIJST.strip(EXTENSIE)
 
+def overhorenmenu(key, woordenlijst):
+    print_regel()
+    print_regel("Vul Enter in om verder te gaan")
+    print_regel("Vul " + STOPPEN + " in om te stoppen.")
+    print_regel("vul " + DELETE + " in om het woord te verwijderen.")
+    print_footer()
+    dangle = True
+    while dangle == True:
+        answertwo = input()
+        if answertwo == "":
+            dangle = False
+            pass
+        elif answertwo == STOPPEN:
+            dangle = False
+            dingle = False #whhhhhaaaaaaat???
+            break
+        elif answertwo == DELETE:
+            verwijder_woord(key, woordenlijst)
+            dangle = False
+        else:
+            print("Vul Enter, " + STOPPEN + " of " + DELETE + " in.")
+            time.sleep(2)
+
 def overhoren(woordenlijst):
     dingle = True
     while dingle == True:
@@ -90,11 +113,7 @@ def overhoren(woordenlijst):
                 leeg_scherm()
                 print_header()
                 print_header_regel("Juist, " + value + " betekent " + key + ".")
-                print_regel()
-                print_regel("Vul Enter in om verder te gaan")
-                print_regel("Vul " + STOPPEN + " in om te stoppen en " + DELETE + " in om het woord te verwijderen.")
-                print_footer()
-                time.sleep(2)
+                overhorenmenu(key, woordenlijst)
             elif answer == STOPPEN:
                 dingle = False
                 break
@@ -102,11 +121,7 @@ def overhoren(woordenlijst):
                 leeg_scherm()
                 print_header()
                 print_header_regel("Onjuist, " + value + " betekent " + key + ".")
-                print_regel()
-                print_regel("Vul Enter in om verder te gaan")
-                print_regel("Vul " + STOPPEN + " in om te stoppen en " + DELETE + " in om het woord te verwijderen.")
-                print_footer()
-                answertwo = input()
+                overhorenmenu(key, woordenlijst)
     #Blijf woorden overhoren totdat de gebruiker aangeeft te willen stoppen.
     #Gebruikt: STOPPEN
     #Parameters: de woordenlijst die overhoord moet worden
@@ -154,15 +169,18 @@ def schrijf_woordenlijst(bestandsnaam, woordenlijst):
     f.close()
 
 def verwijder_woord(woord, woordenlijst):
-    answer = input("Weet je het zeker? ")
-    if answer == "ja":
-        del woordenlijst[woord]
-        schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)
-    elif answer == "nee":
-        pass
-    else:
-        print("Vul ja of nee in.")
-        verwijder_woord("raam", lees_woordenlijst(STANDAARD_LIJST))
+    del_loop = True
+    while del_loop == True:
+        answer = input("Weet je het zeker? ")
+        if answer == "ja":
+            del woordenlijst[woord]
+            schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)
+            del_loop = False
+        elif answer == "nee":
+            del_loop = False
+            pass
+        else:
+            print("Vul ja of nee in.")
     #Vraagt of gebruiker zeker weet of er verwijderd moet worden.
     #Verwijdert het woord en de vertaling uit de lijst als dit zo is.
     #Gebruikt: -
