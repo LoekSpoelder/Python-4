@@ -56,13 +56,24 @@ def main():
         print_menu(nieuwe_lijst_naam())
         keuze = input("Uw keuze: ")
         if keuze == NIEUWE_LIJST:
-            print("")
+            leeg_scherm()
+            print_header()
+            print_regel("Typ hieronder de nieuwe lijst naam in.")
+            print_regel("vergeet niet de extensie .txt toe te voegen!")
+            print_footer()
+            naam = input()
+            f = open(naam, "w")
+            f.close() #Hoeft dit wel?
         elif keuze == KIES_LIJST:
             kies_lijst()
         elif keuze == TOEVOEGEN:
             voeg_woorden_toe(woordenboek, STANDAARD_LIJST)
         elif keuze == OVERHOREN:
-            overhoren(lees_woordenlijst(STANDAARD_LIJST))
+            if woordenboek: #fix this shit bruh
+                overhoren(lees_woordenlijst(STANDAARD_LIJST))
+            else:
+                print("Je moet nog woorden toevoegen.")
+                time.sleep(2)
         elif keuze == STOPPEN:
             leeg_scherm()
             print_afscheid()
@@ -103,7 +114,7 @@ def overhorenmenu(key, woordenlijst):
 def overhoren(woordenlijst):
     dingle = True
     while dingle == True:
-        for key, value in woordenlijst.items():
+        for key, value in woordenlijst.items(): #kappuuttt
             leeg_scherm()
             print_header()
             print_header_regel('Wat is de vertaling van "' + value + '".')
@@ -151,10 +162,6 @@ def print_menu(lijst_naam):
     print(f"| {OVERHOREN + '. woordenlijsten overhoren':<{SCHERMBREEDTE-4}} |")
     print(f"| {STOPPEN + '. stoppen met het programma':<{SCHERMBREEDTE-4}} |")
     print_footer()
-    #Print het (keuze)menu inclusief de geselecteerde lijst
-    #Gebruikt: SCHERMHOOGTE, SCHERMBREEDTE
-    #Parameters: De naam van de geselecteerde woordenlijst
-    #Returnwaarde: -
 
 def print_regel(inhoud=''):
     print(f"| {inhoud:<{SCHERMBREEDTE-4}} |")
@@ -169,9 +176,13 @@ def schrijf_woordenlijst(bestandsnaam, woordenlijst):
     f.close()
 
 def verwijder_woord(woord, woordenlijst):
+    leeg_scherm()
+    print_header()
+    print_header_regel("Weet je het zeker?")
+    print_footer()
     del_loop = True
     while del_loop == True:
-        answer = input("Weet je het zeker? ")
+        answer = input()
         if answer == "ja":
             del woordenlijst[woord]
             schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)

@@ -3,3 +3,4 @@ schaap=sheep
 varken=pig
 raam=window
 kast=closet
+stoel=chair
