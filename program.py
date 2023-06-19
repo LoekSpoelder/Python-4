@@ -1,4 +1,4 @@
-import os, time
+import os, time, random
 DELETE = 'd'
 EXTENSIE = '.txt'
 KIES_LIJST = 'k'
@@ -13,14 +13,14 @@ STOPPEN = 's'
 TOEVOEGEN = 't'
 woordenboek = {}
 
-def kies_lijst():
-    global STANDAARD_LIJST
+def kies_lijst(huidig):
+    gekozenlijst = huidig
     leeg_scherm()
     stowage = os.listdir()
     stowage.remove(".git")
     stowage.remove("program.py")
     print_header()
-    print_header_regel("De Huidige lijst is: " + nieuwe_lijst_naam())
+    print_header_regel("De Huidige lijst is: " + nieuwe_lijst_naam(huidig))
     print_regel()
     print_regel("Woordenlijsten in map:")
     for thingy in range(len(stowage)):
@@ -31,13 +31,14 @@ def kies_lijst():
     print_footer()
     antwoord = input("Woordenlijst: ")
     if antwoord in stowage:
-        STANDAARD_LIJST = antwoord
+        gekozenlijst = antwoord
     elif antwoord == STOPPEN:
         pass
     else:
         print("Dat is niet een woordenlijst.")
         time.sleep(2)
         kies_lijst()
+    return gekozenlijst
 
 def leeg_scherm():
     os.system('cls')
@@ -51,10 +52,10 @@ def lees_woordenlijst(bestandsnaam):
     return woordenboek
 
 def main():
-    wrdbk = lees_woordenlijst(STANDAARD_LIJST)
+    wrdbk = STANDAARD_LIJST
     while True:
         leeg_scherm()
-        print_menu(nieuwe_lijst_naam())
+        print_menu(nieuwe_lijst_naam(wrdbk))
         keuze = input("Uw keuze: ")
         if keuze == NIEUWE_LIJST:
             leeg_scherm()
@@ -63,17 +64,16 @@ def main():
             print_regel("vergeet niet de extensie .txt toe te voegen!")
             print_footer()
             naam = input()
-#            f = open(naam, "w")
+            f = open(naam, "w")
             wrdbk = lees_woordenlijst(naam)
         elif keuze == KIES_LIJST:
-            kies_lijst()
-            
+            wrdbk = kies_lijst(wrdbk)
         elif keuze == TOEVOEGEN:
-            voeg_woorden_toe(wrdbk, STANDAARD_LIJST)
+            voeg_woorden_toe(wrdbk, lees_woordenlijst(wrdbk))
         elif keuze == OVERHOREN:
-            wrdbk = lees_woordenlijst(STANDAARD_LIJST)
-            if bool(woordenboek): #fix this of is het al gefixt?
-                overhoren(wrdbk)
+            lees_woordenlijst(wrdbk)
+            if bool(lees_woordenlijst(wrdbk)): #fix this of is het al gefixt?
+                overhoren(lees_woordenlijst(wrdbk))
             else:
                 print("Je moet nog woorden toevoegen.")
                 time.sleep(2)
@@ -85,60 +85,51 @@ def main():
             print("Vul " + NIEUWE_LIJST + ", " + KIES_LIJST + ", " + TOEVOEGEN + ", " + OVERHOREN + " of " + STOPPEN + " in.")
             time.sleep(2)
 
-def nieuwe_lijst_naam():
-    return STANDAARD_LIJST.strip(EXTENSIE)
-
-def overhorenmenu(key, woordenlijst):
-    dingle = True
-    print_regel()
-    print_regel("Vul Enter in om verder te gaan")
-    print_regel("Vul " + STOPPEN + " in om te stoppen.")
-    print_regel("vul " + DELETE + " in om het woord te verwijderen.")
-    print_footer()
-    Layer2 = True
-    while Layer2 == True:
-        answertwo = input()
-        if answertwo == "":
-            Layer2 = False
-        elif answertwo == STOPPEN:
-            Layer2 = False
-            Layer1 = False
-            break
-        elif answertwo == DELETE:
-            verwijder_woord(key, woordenlijst)
-            Layer2 = False
-        else:
-            print("Vul Enter, " + STOPPEN + " of " + DELETE + " in.")
-            time.sleep(2)
-    return Layer1
+def nieuwe_lijst_naam(lijst):
+    return lijst.strip(EXTENSIE)
 
 def overhoren(woordenlijst):
     Layer1 = True
     while Layer1 == True:
-
-        for key, value in woordenlijst.items(): #kappuuttt maak dit random en een while loop omdat for loops niet kunnen interpalate worden na een dict mutation
+        key, value = random.choice(list(woordenlijst.items()))
+        leeg_scherm()
+        print_header()
+        print_header_regel('Wat is de vertaling van "' + value + '".')
+        print_footer()
+        answer = input()
+        if answer == key:
             leeg_scherm()
             print_header()
-            print_header_regel('Wat is de vertaling van "' + value + '".')
+            print_header_regel("Juist, " + value + " betekent " + key + ".")
             print_footer()
-            answer = input()
-            if answer == key:
-                leeg_scherm()
-                print_header()
-                print_header_regel("Juist, " + value + " betekent " + key + ".")
-                #dit hoeft niet perse
-                # retovmenu = overhorenmenu(key, woordenlijst)
-                # if retovmenu == False:
-                #     Layer1 = False
-                #     break
-            elif answer == STOPPEN:
-                Layer1 = False
-                break
-            else:
-                leeg_scherm()
-                print_header()
-                print_header_regel("Onjuist, " + value + " betekent " + key + ".")
-                overhorenmenu(key, woordenlijst)
+            time.sleep(1)
+        elif answer == STOPPEN:
+            Layer1 = False
+            break
+        else:
+            leeg_scherm()
+            print_header()
+            print_header_regel("Onjuist, " + value + " betekent " + key + ".")
+            print_regel()
+            print_regel("Vul Enter in om verder te gaan")
+            print_regel("Vul " + STOPPEN + " in om te stoppen.")
+            print_regel("vul " + DELETE + " in om het woord te verwijderen.")
+            print_footer()
+            Layer2 = True
+            while Layer2 == True:
+                answertwo = input()
+                if answertwo == "":
+                    Layer2 = False
+                elif answertwo == STOPPEN:
+                    Layer2 = False
+                    Layer1 = False
+                    break
+                elif answertwo == DELETE:
+                    verwijder_woord(key, woordenlijst)
+                    Layer2 = False
+                else:
+                    print("Vul Enter, " + STOPPEN + " of " + DELETE + " in.")
+                    time.sleep(2)
 
 def print_afscheid():
     print("-"*SCHERMBREEDTE)
@@ -187,36 +178,24 @@ def verwijder_woord(woord, woordenlijst):
         answer = input()
         if answer == "ja":
             del woordenlijst[woord]
-            rwaarde = schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)
+            schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)
             del_loop = False
         elif answer == "nee":
             del_loop = False
             pass
         else:
             print("Vul ja of nee in.")
-    return rwaarde
-    #Vraagt of gebruiker zeker weet of er verwijderd moet worden.
-    #Verwijdert het woord en de vertaling uit de lijst als dit zo is.
-    #Gebruikt: -
-    #Parameters: het woord dat verwijderd moet worden, de woordenlijst waaruit verwijderd moet worden
-    #Returnwaarde: -
 
-def voeg_woorden_toe(woordenlijst, STANDAARD_LIJST):
-    lees_woordenlijst(STANDAARD_LIJST)
+def voeg_woorden_toe(woordenlijst, lijst):
     while True:
         woord1 = input("1. Wat is het Nederlandse woord? ")
         if woord1 == STOPPEN:
             break
-        woord2 = input("2. Wat is het Engelse woord? ")
+        woord2 = input("2. Wat is het andere woord? ")
         if woord2 == STOPPEN:
             break
         print("-"*SCHERMBREEDTE)
-        woordenlijst[woord1] = woord2
-    schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)
-    #Vraag de gebruiker steeds om woordenparen en voeg ze toe aan de lijst.
-    #Stop als de gebruiker aangeeft te willen stoppen.
-    #Gebruikt: SCHEIDER, STOPPEN
-    #Parameters: de woordenlijst waarin toegevoegd moet worden, de lijst_naam van deze woordenlijst
-    #Returnwaarde: -
+        lijst[woord1] = woord2
+    schrijf_woordenlijst(woordenlijst, lijst)
 
 main()
