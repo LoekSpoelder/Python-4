@@ -4,3 +4,4 @@ varken=pig
 raam=window
 kast=closet
 stoel=chair
+tafel=table

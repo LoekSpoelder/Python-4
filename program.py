@@ -51,6 +51,7 @@ def lees_woordenlijst(bestandsnaam):
     return woordenboek
 
 def main():
+    wrdbk = lees_woordenlijst(STANDAARD_LIJST)
     while True:
         leeg_scherm()
         print_menu(nieuwe_lijst_naam())
@@ -62,15 +63,17 @@ def main():
             print_regel("vergeet niet de extensie .txt toe te voegen!")
             print_footer()
             naam = input()
-            f = open(naam, "w")
-            f.close() #Hoeft dit wel?
+#            f = open(naam, "w")
+            wrdbk = lees_woordenlijst(naam)
         elif keuze == KIES_LIJST:
             kies_lijst()
+            
         elif keuze == TOEVOEGEN:
-            voeg_woorden_toe(woordenboek, STANDAARD_LIJST)
+            voeg_woorden_toe(wrdbk, STANDAARD_LIJST)
         elif keuze == OVERHOREN:
-            if woordenboek: #fix this shit bruh
-                overhoren(lees_woordenlijst(STANDAARD_LIJST))
+            wrdbk = lees_woordenlijst(STANDAARD_LIJST)
+            if bool(woordenboek): #fix this of is het al gefixt?
+                overhoren(wrdbk)
             else:
                 print("Je moet nog woorden toevoegen.")
                 time.sleep(2)
@@ -81,40 +84,39 @@ def main():
         else:
             print("Vul " + NIEUWE_LIJST + ", " + KIES_LIJST + ", " + TOEVOEGEN + ", " + OVERHOREN + " of " + STOPPEN + " in.")
             time.sleep(2)
-    #Gebruikt: STANDAARD_LIJST, KIES_LIJST, OVERHOREN, TOEVOEGEN, EXTENSIE, STOPPEN
-    #Parameters: Geen
-    #Returnwaarde: Geen
 
 def nieuwe_lijst_naam():
     return STANDAARD_LIJST.strip(EXTENSIE)
 
 def overhorenmenu(key, woordenlijst):
+    dingle = True
     print_regel()
     print_regel("Vul Enter in om verder te gaan")
     print_regel("Vul " + STOPPEN + " in om te stoppen.")
     print_regel("vul " + DELETE + " in om het woord te verwijderen.")
     print_footer()
-    dangle = True
-    while dangle == True:
+    Layer2 = True
+    while Layer2 == True:
         answertwo = input()
         if answertwo == "":
-            dangle = False
-            pass
+            Layer2 = False
         elif answertwo == STOPPEN:
-            dangle = False
-            dingle = False #whhhhhaaaaaaat???
+            Layer2 = False
+            Layer1 = False
             break
         elif answertwo == DELETE:
             verwijder_woord(key, woordenlijst)
-            dangle = False
+            Layer2 = False
         else:
             print("Vul Enter, " + STOPPEN + " of " + DELETE + " in.")
             time.sleep(2)
+    return Layer1
 
 def overhoren(woordenlijst):
-    dingle = True
-    while dingle == True:
-        for key, value in woordenlijst.items(): #kappuuttt
+    Layer1 = True
+    while Layer1 == True:
+
+        for key, value in woordenlijst.items(): #kappuuttt maak dit random en een while loop omdat for loops niet kunnen interpalate worden na een dict mutation
             leeg_scherm()
             print_header()
             print_header_regel('Wat is de vertaling van "' + value + '".')
@@ -124,19 +126,19 @@ def overhoren(woordenlijst):
                 leeg_scherm()
                 print_header()
                 print_header_regel("Juist, " + value + " betekent " + key + ".")
-                overhorenmenu(key, woordenlijst)
+                #dit hoeft niet perse
+                # retovmenu = overhorenmenu(key, woordenlijst)
+                # if retovmenu == False:
+                #     Layer1 = False
+                #     break
             elif answer == STOPPEN:
-                dingle = False
+                Layer1 = False
                 break
             else:
                 leeg_scherm()
                 print_header()
                 print_header_regel("Onjuist, " + value + " betekent " + key + ".")
                 overhorenmenu(key, woordenlijst)
-    #Blijf woorden overhoren totdat de gebruiker aangeeft te willen stoppen.
-    #Gebruikt: STOPPEN
-    #Parameters: de woordenlijst die overhoord moet worden
-    #Returnwaarde: -
 
 def print_afscheid():
     print("-"*SCHERMBREEDTE)
@@ -185,13 +187,14 @@ def verwijder_woord(woord, woordenlijst):
         answer = input()
         if answer == "ja":
             del woordenlijst[woord]
-            schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)
+            rwaarde = schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)
             del_loop = False
         elif answer == "nee":
             del_loop = False
             pass
         else:
             print("Vul ja of nee in.")
+    return rwaarde
     #Vraagt of gebruiker zeker weet of er verwijderd moet worden.
     #Verwijdert het woord en de vertaling uit de lijst als dit zo is.
     #Gebruikt: -
