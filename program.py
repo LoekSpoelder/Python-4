@@ -15,29 +15,31 @@ woordenboek = {}
 
 def kies_lijst(huidig):
     gekozenlijst = huidig
-    leeg_scherm()
-    stowage = os.listdir()
-    stowage.remove(".git")
-    stowage.remove("program.py")
-    print_header()
-    print_header_regel("De Huidige lijst is: " + nieuwe_lijst_naam(huidig))
-    print_regel()
-    print_regel("Woordenlijsten in map:")
-    for thingy in range(len(stowage)):
-        print_regel(stowage[thingy])
-    print_regel()
-    print_regel("Voer hieronder de gekozen lijstnaam in.")
-    print_regel("Voer '" + STOPPEN + "' in om te stoppen.")
-    print_footer()
-    antwoord = input("Woordenlijst: ")
-    if antwoord in stowage:
-        gekozenlijst = antwoord
-    elif antwoord == STOPPEN:
-        pass
-    else:
-        print("Dat is niet een woordenlijst.")
-        time.sleep(2)
-        kies_lijst()
+    loop = True
+    while loop == True:
+        leeg_scherm()
+        stowage = os.listdir()
+        stowage.remove(".git")
+        stowage.remove("program.py")
+        print_header()
+        print_header_regel("De Huidige lijst is: " + nieuwe_lijst_naam(huidig))
+        print_regel()
+        print_regel("Woordenlijsten in map:")
+        for thingy in range(len(stowage)):
+            print_regel(stowage[thingy])
+        print_regel()
+        print_regel("Voer hieronder de gekozen lijstnaam in.")
+        print_regel("Voer '" + STOPPEN + "' in om te stoppen.")
+        print_footer()
+        antwoord = input("Woordenlijst: ")
+        if antwoord in stowage:
+            gekozenlijst = antwoord
+            loop = False
+        elif antwoord == STOPPEN:
+            loop = False
+        else:
+            print("Dat is niet een woordenlijst.")
+            time.sleep(2)
     return gekozenlijst
 
 def leeg_scherm():
@@ -64,16 +66,22 @@ def main():
             print_regel("vergeet niet de extensie .txt toe te voegen!")
             print_footer()
             naam = input()
-            f = open(naam, "w")
-            wrdbk = lees_woordenlijst(naam)
+            if naam.upper() in (name.upper() for name in os.listdir()):
+                print("Die bestaat al!")
+                time.sleep(2)
+            elif naam == STOPPEN:
+                pass
+            else:
+                f = open(naam, "w")
+                wrdbk = naam
         elif keuze == KIES_LIJST:
             wrdbk = kies_lijst(wrdbk)
         elif keuze == TOEVOEGEN:
             voeg_woorden_toe(wrdbk, lees_woordenlijst(wrdbk))
         elif keuze == OVERHOREN:
             lees_woordenlijst(wrdbk)
-            if bool(lees_woordenlijst(wrdbk)): #fix this of is het al gefixt?
-                overhoren(lees_woordenlijst(wrdbk))
+            if bool(lees_woordenlijst(wrdbk)):
+                overhoren(lees_woordenlijst(wrdbk), wrdbk)
             else:
                 print("Je moet nog woorden toevoegen.")
                 time.sleep(2)
@@ -88,7 +96,7 @@ def main():
 def nieuwe_lijst_naam(lijst):
     return lijst.strip(EXTENSIE)
 
-def overhoren(woordenlijst):
+def overhoren(woordenlijst, wrdbk):
     Layer1 = True
     while Layer1 == True:
         key, value = random.choice(list(woordenlijst.items()))
@@ -123,10 +131,10 @@ def overhoren(woordenlijst):
                 elif answertwo == STOPPEN:
                     Layer2 = False
                     Layer1 = False
-                    break
                 elif answertwo == DELETE:
-                    verwijder_woord(key, woordenlijst)
+                    verwijder_woord(key, woordenlijst, wrdbk)
                     Layer2 = False
+                    Layer1 = False
                 else:
                     print("Vul Enter, " + STOPPEN + " of " + DELETE + " in.")
                     time.sleep(2)
@@ -163,12 +171,14 @@ def print_header_regel(inhoud=''):
     print(f"| {inhoud:^{SCHERMBREEDTE-4}} |")
 
 def schrijf_woordenlijst(bestandsnaam, woordenlijst):
+    woordenlijst = {}
+    woordenlijst = lees_woordenlijst(bestandsnaam) 
     f = open(bestandsnaam, 'w')
     for key, value in woordenlijst.items():
         f.write(f"{key}{SCHEIDER}{value}\n")
     f.close()
 
-def verwijder_woord(woord, woordenlijst):
+def verwijder_woord(woord, woordenlijst, naam):
     leeg_scherm()
     print_header()
     print_header_regel("Weet je het zeker?")
@@ -178,7 +188,7 @@ def verwijder_woord(woord, woordenlijst):
         answer = input()
         if answer == "ja":
             del woordenlijst[woord]
-            schrijf_woordenlijst(STANDAARD_LIJST, woordenlijst)
+            schrijf_woordenlijst(naam, woordenlijst)
             del_loop = False
         elif answer == "nee":
             del_loop = False
@@ -197,5 +207,7 @@ def voeg_woorden_toe(woordenlijst, lijst):
         print("-"*SCHERMBREEDTE)
         lijst[woord1] = woord2
     schrijf_woordenlijst(woordenlijst, lijst)
+
+#woordenlijst word gecloned als je een woord toevoegd, verandert van lijst, en weer een woord toevoegd.
 
 main()

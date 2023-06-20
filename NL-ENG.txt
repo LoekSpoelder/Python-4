@@ -1,9 +1,0 @@
-koe=cow
-schaap=sheep
-varken=pig
-raam=window
-kast=closet
-stoel=chair
-tafel=table
-fles=bottle
-hout=wood
