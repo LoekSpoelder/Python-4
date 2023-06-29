@@ -1,4 +1,7 @@
 import os, time, random
+woordenboek = {}
+
+#Dit zijn variabelen die je kan veranderen
 DELETE = 'd'
 EXTENSIE = '.txt'
 KIES_LIJST = 'k'
@@ -11,8 +14,8 @@ SCHERMBREEDTE = 50
 STANDAARD_LIJST = 'NL-ENG.txt'
 STOPPEN = 's'
 TOEVOEGEN = 't'
-woordenboek = {}
 
+#Deze functie laat je veranderen van lijst en laat je de bestanden zien die in de map zitten.
 def kies_lijst(huidig):
     gekozenlijst = huidig
     loop = True
@@ -42,10 +45,13 @@ def kies_lijst(huidig):
             time.sleep(2)
     return gekozenlijst
 
+#Deze functie maakt het terminal scherm leeg
 def leeg_scherm():
     os.system('cls')
 
+#Deze functie schrijft een bestand over naar een dictionary
 def lees_woordenlijst(bestandsnaam):
+    woordenboek = {}
     f = open(bestandsnaam)
     for line in f:
         woord1, woord2 = line.strip('\n').split(SCHEIDER)
@@ -53,6 +59,7 @@ def lees_woordenlijst(bestandsnaam):
     f.close()
     return woordenboek
 
+#Deze functie activeert de andere functies, het is de main functie
 def main():
     wrdbk = STANDAARD_LIJST
     while True:
@@ -77,7 +84,7 @@ def main():
         elif keuze == KIES_LIJST:
             wrdbk = kies_lijst(wrdbk)
         elif keuze == TOEVOEGEN:
-            voeg_woorden_toe(wrdbk, lees_woordenlijst(wrdbk))
+            voeg_woorden_toe(wrdbk)
         elif keuze == OVERHOREN:
             lees_woordenlijst(wrdbk)
             if bool(lees_woordenlijst(wrdbk)):
@@ -93,9 +100,11 @@ def main():
             print("Vul " + NIEUWE_LIJST + ", " + KIES_LIJST + ", " + TOEVOEGEN + ", " + OVERHOREN + " of " + STOPPEN + " in.")
             time.sleep(2)
 
+#Deze functie stript de extensie van de bestandsnaam
 def nieuwe_lijst_naam(lijst):
     return lijst.strip(EXTENSIE)
 
+#Deze functie overhoort door willekeurig door de dictionairy heen te gaan en laat je het woord verwijderen als je het fout hebt
 def overhoren(woordenlijst, wrdbk):
     Layer1 = True
     while Layer1 == True:
@@ -139,19 +148,23 @@ def overhoren(woordenlijst, wrdbk):
                     print("Vul Enter, " + STOPPEN + " of " + DELETE + " in.")
                     time.sleep(2)
 
+#Deze functie toont een afscheidsbericht
 def print_afscheid():
     print("-"*SCHERMBREEDTE)
     print(f"|{'Doei!':^{SCHERMBREEDTE-2}}|")
     print("-"*SCHERMBREEDTE)
 
+#Deze functie print een header
 def print_header():
     print("-"*SCHERMBREEDTE)
     print(f"|{' ':{SCHERMBREEDTE-2}}|")
 
+#Deze functie print een footer
 def print_footer():
     print(f"|{' ':{SCHERMBREEDTE-2}}|")
     print("-"*SCHERMBREEDTE)
 
+#Deze functie toont het menu
 def print_menu(lijst_naam):
     print_header()
     print(f"|{'Menu':^{SCHERMBREEDTE-2}}|")
@@ -164,20 +177,22 @@ def print_menu(lijst_naam):
     print(f"| {STOPPEN + '. stoppen met het programma':<{SCHERMBREEDTE-4}} |")
     print_footer()
 
+#Deze functie print een regel
 def print_regel(inhoud=''):
     print(f"| {inhoud:<{SCHERMBREEDTE-4}} |")
 
+#Deze functie print een header regel
 def print_header_regel(inhoud=''):
     print(f"| {inhoud:^{SCHERMBREEDTE-4}} |")
 
+#Deze functie shcrijft woorden over door naar elke rij te kijken en te copieren totdat hij klaar is
 def schrijf_woordenlijst(bestandsnaam, woordenlijst):
-    woordenlijst = {}
-    woordenlijst = lees_woordenlijst(bestandsnaam) 
     f = open(bestandsnaam, 'w')
     for key, value in woordenlijst.items():
         f.write(f"{key}{SCHEIDER}{value}\n")
     f.close()
 
+#Deze functie verwijdert een woord in een dictionairy en wordt overgeschreven naar het bestand
 def verwijder_woord(woord, woordenlijst, naam):
     leeg_scherm()
     print_header()
@@ -196,7 +211,9 @@ def verwijder_woord(woord, woordenlijst, naam):
         else:
             print("Vul ja of nee in.")
 
-def voeg_woorden_toe(woordenlijst, lijst):
+#Deze functie voegt woorden toe aan een dictionairy een schrijft het over naar een bestand
+def voeg_woorden_toe(woordenlijst):
+    woordenboek = lees_woordenlijst(woordenlijst)
     while True:
         woord1 = input("1. Wat is het Nederlandse woord? ")
         if woord1 == STOPPEN:
@@ -204,10 +221,8 @@ def voeg_woorden_toe(woordenlijst, lijst):
         woord2 = input("2. Wat is het andere woord? ")
         if woord2 == STOPPEN:
             break
-        print("-"*SCHERMBREEDTE)
-        lijst[woord1] = woord2
-    schrijf_woordenlijst(woordenlijst, lijst)
-
-#woordenlijst word gecloned als je een woord toevoegd, verandert van lijst, en weer een woord toevoegd.
+        print("-" * SCHERMBREEDTE)
+        woordenboek[woord1] = woord2
+    schrijf_woordenlijst(woordenlijst, woordenboek)
 
 main()
